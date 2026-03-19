@@ -1,0 +1,19 @@
+# OpenMemory - IDE/Assistant specific rules
+.cursor\rules\openmemory.mdc
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+.env
+*.egg-info/
+.eggs/
+dist/
+build/
+.pytest_cache/
+.coverage
+htmlcov/
+/ref
