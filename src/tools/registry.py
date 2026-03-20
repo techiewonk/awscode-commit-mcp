@@ -17,22 +17,25 @@ def get_tools() -> list[Tool]:
         Tool(
             name="ping",
             description="Test tool: returns pong and confirms server is running.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
-                    "message": {"type": "string", "description": "Optional message to echo back"},
+                    "message": {
+                        "type": "string",
+                        "description": "Optional message to echo back",
+                    },
                 },
             },
         ),
         Tool(
             name="aws_creds_refresh",
             description="Manually refreshes AWS credentials. Use when: credentials expired, authentication errors, switched AWS configuration, or testing credential validity. Reloads from configured source (profile/environment).",
-            input_schema={"type": "object", "properties": {}},
+            inputSchema={"type": "object", "properties": {}},
         ),
         Tool(
             name="aws_profile_switch",
             description="Switches to a different AWS profile for different accounts/roles. Use when: need different AWS account, switch environments (dev/prod), or use different IAM roles.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
                     "profileName": {
@@ -46,35 +49,54 @@ def get_tools() -> list[Tool]:
         Tool(
             name="aws_profiles_list",
             description="Lists all available AWS profiles configured in ~/.aws/credentials. Use when: user wants to switch profiles, check available accounts, or troubleshoot authentication.",
-            input_schema={"type": "object", "properties": {}},
+            inputSchema={"type": "object", "properties": {}},
         ),
         Tool(
             name="aws_creds_status",
             description="Shows current AWS credentials status including validity, expiration, and access key info. Use when: troubleshooting auth issues, checking if credentials expired, or verifying AWS account.",
-            input_schema={"type": "object", "properties": {}},
+            inputSchema={"type": "object", "properties": {}},
         ),
         # Repository tools
         Tool(
             name="repos_list",
             description="Lists all AWS CodeCommit repositories you have access to. Returns repository metadata including name, ID, description, default branch, creation date, and clone URLs. Supports search filtering and pagination.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
-                    "searchTerm": {"type": "string", "description": "Filter repositories by name or description (case-insensitive substring match)."},
-                    "nextToken": {"type": "string", "description": "Pagination token from previous response."},
-                    "maxResults": {"type": "number", "description": "Number of repositories to return (1-1000). Default 100."},
-                    "sortBy": {"type": "string", "description": "Sort by repositoryName or lastModifiedDate."},
-                    "order": {"type": "string", "enum": ["ascending", "descending"], "description": "Sort order."},
+                    "searchTerm": {
+                        "type": "string",
+                        "description": "Filter repositories by name or description (case-insensitive substring match).",
+                    },
+                    "nextToken": {
+                        "type": "string",
+                        "description": "Pagination token from previous response.",
+                    },
+                    "maxResults": {
+                        "type": "number",
+                        "description": "Number of repositories to return (1-1000). Default 100.",
+                    },
+                    "sortBy": {
+                        "type": "string",
+                        "description": "Sort by repositoryName or lastModifiedDate.",
+                    },
+                    "order": {
+                        "type": "string",
+                        "enum": ["ascending", "descending"],
+                        "description": "Sort order.",
+                    },
                 },
             },
         ),
         Tool(
             name="repo_get",
             description="Gets detailed information about a specific repository including metadata, default branch, clone URLs, creation date, and description.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
-                    "repositoryName": {"type": "string", "description": "Exact name of the AWS CodeCommit repository."},
+                    "repositoryName": {
+                        "type": "string",
+                        "description": "Exact name of the AWS CodeCommit repository.",
+                    },
                 },
                 "required": ["repositoryName"],
             },
@@ -82,11 +104,17 @@ def get_tools() -> list[Tool]:
         Tool(
             name="branches_list",
             description="Lists all branches in a repository with their latest commit IDs. Essential for understanding branch topology and selecting branches for comparisons and PRs.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
-                    "repositoryName": {"type": "string", "description": "Repository name to list branches from."},
-                    "nextToken": {"type": "string", "description": "Pagination token for additional branches."},
+                    "repositoryName": {
+                        "type": "string",
+                        "description": "Repository name to list branches from.",
+                    },
+                    "nextToken": {
+                        "type": "string",
+                        "description": "Pagination token for additional branches.",
+                    },
                 },
                 "required": ["repositoryName"],
             },
@@ -94,11 +122,17 @@ def get_tools() -> list[Tool]:
         Tool(
             name="branch_get",
             description="Gets detailed information about a specific branch including its latest commit ID and commit details.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
-                    "repositoryName": {"type": "string", "description": "Repository containing the branch."},
-                    "branchName": {"type": "string", "description": "Exact branch name (e.g. main, develop). Case-sensitive."},
+                    "repositoryName": {
+                        "type": "string",
+                        "description": "Repository containing the branch.",
+                    },
+                    "branchName": {
+                        "type": "string",
+                        "description": "Exact branch name (e.g. main, develop). Case-sensitive.",
+                    },
                 },
                 "required": ["repositoryName", "branchName"],
             },
@@ -106,12 +140,21 @@ def get_tools() -> list[Tool]:
         Tool(
             name="file_get",
             description="Retrieves file content at a given commit/branch. Returns full file content with blobId. For diff-only analysis use file_diff_analyze.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
-                    "repositoryName": {"type": "string", "description": "Repository containing the file."},
-                    "commitSpecifier": {"type": "string", "description": "Branch name or commit ID."},
-                    "filePath": {"type": "string", "description": "Full path to file from repository root (e.g. src/main.py)."},
+                    "repositoryName": {
+                        "type": "string",
+                        "description": "Repository containing the file.",
+                    },
+                    "commitSpecifier": {
+                        "type": "string",
+                        "description": "Branch name or commit ID.",
+                    },
+                    "filePath": {
+                        "type": "string",
+                        "description": "Full path to file from repository root (e.g. src/main.py).",
+                    },
                 },
                 "required": ["repositoryName", "commitSpecifier", "filePath"],
             },
@@ -119,12 +162,21 @@ def get_tools() -> list[Tool]:
         Tool(
             name="folder_get",
             description="Lists all files and subdirectories in a folder at a specific commit/branch. Use to explore repository structure.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
-                    "repositoryName": {"type": "string", "description": "Repository to explore."},
-                    "commitSpecifier": {"type": "string", "description": "Branch name or commit ID."},
-                    "folderPath": {"type": "string", "description": "Path to folder from repository root. Use empty string for root."},
+                    "repositoryName": {
+                        "type": "string",
+                        "description": "Repository to explore.",
+                    },
+                    "commitSpecifier": {
+                        "type": "string",
+                        "description": "Branch name or commit ID.",
+                    },
+                    "folderPath": {
+                        "type": "string",
+                        "description": "Path to folder from repository root. Use empty string for root.",
+                    },
                 },
                 "required": ["repositoryName", "commitSpecifier", "folderPath"],
             },
@@ -132,13 +184,26 @@ def get_tools() -> list[Tool]:
         Tool(
             name="code_search",
             description="Two modes: 1) tree — repository structure in formatted tree view. 2) search — search for patterns within a specific file (regex, literal, function, class, import, variable).",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
-                    "repositoryName": {"type": "string", "description": "Repository to search in."},
-                    "commitSpecifier": {"type": "string", "description": "Branch name or commit ID."},
-                    "mode": {"type": "string", "enum": ["search", "tree"], "description": "Operation mode: search or tree."},
-                    "filePath": {"type": "string", "description": "Required for search mode. Exact file path to search within."},
+                    "repositoryName": {
+                        "type": "string",
+                        "description": "Repository to search in.",
+                    },
+                    "commitSpecifier": {
+                        "type": "string",
+                        "description": "Branch name or commit ID.",
+                    },
+                    "mode": {
+                        "type": "string",
+                        "enum": ["search", "tree"],
+                        "description": "Operation mode: search or tree.",
+                    },
+                    "filePath": {
+                        "type": "string",
+                        "description": "Required for search mode. Exact file path to search within.",
+                    },
                     "searchPatterns": {
                         "type": "array",
                         "description": "Required for search mode. Array of {pattern, type} where type is regex|literal|function|class|import|variable.",
@@ -146,17 +211,42 @@ def get_tools() -> list[Tool]:
                             "type": "object",
                             "properties": {
                                 "pattern": {"type": "string"},
-                                "type": {"type": "string", "enum": ["regex", "literal", "function", "class", "import", "variable"]},
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "regex",
+                                        "literal",
+                                        "function",
+                                        "class",
+                                        "import",
+                                        "variable",
+                                    ],
+                                },
                                 "caseSensitive": {"type": "boolean"},
                             },
                             "required": ["pattern", "type"],
                         },
                     },
-                    "treePath": {"type": "string", "description": "For tree mode: root path to list (default repository root)."},
-                    "treeDepth": {"type": "number", "description": "For tree mode: maximum depth (default 10)."},
-                    "maxResults": {"type": "number", "description": "For search mode: max results per pattern (default 50)."},
-                    "includeContext": {"type": "boolean", "description": "For search mode: include surrounding lines (default true)."},
-                    "contextLines": {"type": "number", "description": "For search mode: context lines before/after (default 3)."},
+                    "treePath": {
+                        "type": "string",
+                        "description": "For tree mode: root path to list (default repository root).",
+                    },
+                    "treeDepth": {
+                        "type": "number",
+                        "description": "For tree mode: maximum depth (default 10).",
+                    },
+                    "maxResults": {
+                        "type": "number",
+                        "description": "For search mode: max results per pattern (default 50).",
+                    },
+                    "includeContext": {
+                        "type": "boolean",
+                        "description": "For search mode: include surrounding lines (default true).",
+                    },
+                    "contextLines": {
+                        "type": "number",
+                        "description": "For search mode: context lines before/after (default 3).",
+                    },
                 },
                 "required": ["repositoryName", "commitSpecifier", "mode"],
             },
@@ -164,11 +254,17 @@ def get_tools() -> list[Tool]:
         Tool(
             name="commit_get",
             description="Gets comprehensive details about a specific commit including message, author, committer, timestamp, parent commits, and tree ID.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
-                    "repositoryName": {"type": "string", "description": "Repository containing the commit."},
-                    "commitId": {"type": "string", "description": "Full commit SHA ID (40-character hex)."},
+                    "repositoryName": {
+                        "type": "string",
+                        "description": "Repository containing the commit.",
+                    },
+                    "commitId": {
+                        "type": "string",
+                        "description": "Full commit SHA ID (40-character hex).",
+                    },
                 },
                 "required": ["repositoryName", "commitId"],
             },
@@ -176,71 +272,157 @@ def get_tools() -> list[Tool]:
         Tool(
             name="diff_get",
             description="Gets high-level file differences between commits/branches showing which files changed (A/D/M) with paths and blob IDs. THE MOST CRITICAL tool for code review. After this, use batch_diff_analyze to see what changed in multiple files (git diff only). If diffs don't provide enough context, use file_get without beforeCommitId for full file content, or code_search to find related patterns. For PR reviews use mergeBase as beforeCommitSpecifier, not destinationCommit.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
-                    "repositoryName": {"type": "string", "description": "Repository to compare."},
-                    "beforeCommitSpecifier": {"type": "string", "description": "Base commit/branch (comparing FROM). For PR use mergeBase."},
-                    "afterCommitSpecifier": {"type": "string", "description": "Compare commit/branch (comparing TO). For PR use sourceCommit."},
-                    "beforePath": {"type": "string", "description": "Optional: filter to path in before commit."},
-                    "afterPath": {"type": "string", "description": "Optional: filter to path in after commit."},
-                    "nextToken": {"type": "string", "description": "Pagination token for large changesets."},
-                    "maxResults": {"type": "number", "description": "Max number of differences to return."},
+                    "repositoryName": {
+                        "type": "string",
+                        "description": "Repository to compare.",
+                    },
+                    "beforeCommitSpecifier": {
+                        "type": "string",
+                        "description": "Base commit/branch (comparing FROM). For PR use mergeBase.",
+                    },
+                    "afterCommitSpecifier": {
+                        "type": "string",
+                        "description": "Compare commit/branch (comparing TO). For PR use sourceCommit.",
+                    },
+                    "beforePath": {
+                        "type": "string",
+                        "description": "Optional: filter to path in before commit.",
+                    },
+                    "afterPath": {
+                        "type": "string",
+                        "description": "Optional: filter to path in after commit.",
+                    },
+                    "nextToken": {
+                        "type": "string",
+                        "description": "Pagination token for large changesets.",
+                    },
+                    "maxResults": {
+                        "type": "number",
+                        "description": "Max number of differences to return.",
+                    },
                 },
-                "required": ["repositoryName", "beforeCommitSpecifier", "afterCommitSpecifier"],
+                "required": [
+                    "repositoryName",
+                    "beforeCommitSpecifier",
+                    "afterCommitSpecifier",
+                ],
             },
         ),
         Tool(
             name="file_diff_analyze",
             description="Returns ONLY git diff format for a single file - no file content. Shows what changed with precise line numbers. For deleted files returns deletion confirmation only. When diff is not enough context, use file_get WITHOUT beforeCommitId for full file content or code_search for patterns. For new files consider file_get if diff alone doesn't provide enough context.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
-                    "repositoryName": {"type": "string", "description": "Repository containing the file."},
-                    "beforeCommitId": {"type": "string", "description": "Commit ID to compare from (use mergeBase from PR for accurate line mapping)."},
-                    "afterCommitId": {"type": "string", "description": "Commit ID to compare to (use sourceCommit from PR)."},
-                    "filePath": {"type": "string", "description": "Path to the specific file to analyze."},
-                    "changeType": {"type": "string", "enum": ["A", "D", "M"], "description": "Change type from diff_get: A=Added, D=Deleted, M=Modified."},
+                    "repositoryName": {
+                        "type": "string",
+                        "description": "Repository containing the file.",
+                    },
+                    "beforeCommitId": {
+                        "type": "string",
+                        "description": "Commit ID to compare from (use mergeBase from PR for accurate line mapping).",
+                    },
+                    "afterCommitId": {
+                        "type": "string",
+                        "description": "Commit ID to compare to (use sourceCommit from PR).",
+                    },
+                    "filePath": {
+                        "type": "string",
+                        "description": "Path to the specific file to analyze.",
+                    },
+                    "changeType": {
+                        "type": "string",
+                        "enum": ["A", "D", "M"],
+                        "description": "Change type from diff_get: A=Added, D=Deleted, M=Modified.",
+                    },
                 },
-                "required": ["repositoryName", "beforeCommitId", "afterCommitId", "filePath", "changeType"],
+                "required": [
+                    "repositoryName",
+                    "beforeCommitId",
+                    "afterCommitId",
+                    "filePath",
+                    "changeType",
+                ],
             },
         ),
         Tool(
             name="batch_diff_analyze",
             description="Returns ONLY git diff format for multiple files (3-5 max) - no file content. When diffs lack context for proper review use file_get without beforeCommitId for full content or code_search for related patterns. Provides strategic guidance on which files may need additional context.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
-                    "repositoryName": {"type": "string", "description": "Repository name."},
-                    "beforeCommitId": {"type": "string", "description": "Base commit ID (use mergeBase from PR targets for accurate analysis)."},
-                    "afterCommitId": {"type": "string", "description": "Compare commit ID (use sourceCommit from PR targets)."},
+                    "repositoryName": {
+                        "type": "string",
+                        "description": "Repository name.",
+                    },
+                    "beforeCommitId": {
+                        "type": "string",
+                        "description": "Base commit ID (use mergeBase from PR targets for accurate analysis).",
+                    },
+                    "afterCommitId": {
+                        "type": "string",
+                        "description": "Compare commit ID (use sourceCommit from PR targets).",
+                    },
                     "fileDifferences": {
                         "type": "array",
                         "description": "Array of file differences from diff_get response.",
                         "items": {
                             "type": "object",
                             "properties": {
-                                "changeType": {"type": "string", "enum": ["A", "D", "M"]},
-                                "beforeBlob": {"type": "object", "properties": {"path": {"type": "string"}, "blobId": {"type": "string"}}},
-                                "afterBlob": {"type": "object", "properties": {"path": {"type": "string"}, "blobId": {"type": "string"}}},
+                                "changeType": {
+                                    "type": "string",
+                                    "enum": ["A", "D", "M"],
+                                },
+                                "beforeBlob": {
+                                    "type": "object",
+                                    "properties": {
+                                        "path": {"type": "string"},
+                                        "blobId": {"type": "string"},
+                                    },
+                                },
+                                "afterBlob": {
+                                    "type": "object",
+                                    "properties": {
+                                        "path": {"type": "string"},
+                                        "blobId": {"type": "string"},
+                                    },
+                                },
                             },
                         },
                     },
                 },
-                "required": ["repositoryName", "beforeCommitId", "afterCommitId", "fileDifferences"],
+                "required": [
+                    "repositoryName",
+                    "beforeCommitId",
+                    "afterCommitId",
+                    "fileDifferences",
+                ],
             },
         ),
         # Pull request tools
         Tool(
             name="prs_list",
             description="Lists pull requests in a repository by status (OPEN/CLOSED). Use when starting a review session, user asks about PRs, or finding a specific PR. Returns PR IDs; always follow with pr_get for each PR you need to analyze.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
-                    "repositoryName": {"type": "string", "description": "Repository to list PRs from."},
-                    "pullRequestStatus": {"type": "string", "enum": ["OPEN", "CLOSED"], "description": "OPEN for active PRs, CLOSED for completed/abandoned."},
+                    "repositoryName": {
+                        "type": "string",
+                        "description": "Repository to list PRs from.",
+                    },
+                    "pullRequestStatus": {
+                        "type": "string",
+                        "enum": ["OPEN", "CLOSED"],
+                        "description": "OPEN for active PRs, CLOSED for completed/abandoned.",
+                    },
                     "nextToken": {"type": "string", "description": "Pagination token."},
-                    "maxResults": {"type": "number", "description": "Max PRs to return."},
+                    "maxResults": {
+                        "type": "number",
+                        "description": "Max PRs to return.",
+                    },
                 },
                 "required": ["repositoryName"],
             },
@@ -248,10 +430,13 @@ def get_tools() -> list[Tool]:
         Tool(
             name="pr_get",
             description="Gets complete PR details with critical commit IDs needed for accurate analysis. ESSENTIAL after prs_list. Provides mergeBase (use for beforeCommitId in diff analysis) and sourceCommit/destinationCommit from targets. Extract these for diff_get → batch_diff_analyze → targeted file analysis. Foundation for all subsequent PR analysis and accurate line mapping.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
-                    "pullRequestId": {"type": "string", "description": "PR ID from prs_list."},
+                    "pullRequestId": {
+                        "type": "string",
+                        "description": "PR ID from prs_list.",
+                    },
                 },
                 "required": ["pullRequestId"],
             },
@@ -259,23 +444,34 @@ def get_tools() -> list[Tool]:
         Tool(
             name="pr_create",
             description="Creates a new pull request from source branch to destination branch.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
                     "repositoryName": {"type": "string"},
                     "title": {"type": "string"},
                     "description": {"type": "string"},
-                    "sourceReference": {"type": "string", "description": "Source branch with changes."},
-                    "destinationReference": {"type": "string", "description": "Target branch to merge into."},
+                    "sourceReference": {
+                        "type": "string",
+                        "description": "Source branch with changes.",
+                    },
+                    "destinationReference": {
+                        "type": "string",
+                        "description": "Target branch to merge into.",
+                    },
                     "clientRequestToken": {"type": "string"},
                 },
-                "required": ["repositoryName", "title", "sourceReference", "destinationReference"],
+                "required": [
+                    "repositoryName",
+                    "title",
+                    "sourceReference",
+                    "destinationReference",
+                ],
             },
         ),
         Tool(
             name="pr_update_title",
             description="Updates pull request title.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
                     "pullRequestId": {"type": "string"},
@@ -287,7 +483,7 @@ def get_tools() -> list[Tool]:
         Tool(
             name="pr_update_desc",
             description="Updates pull request description.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
                     "pullRequestId": {"type": "string"},
@@ -299,7 +495,7 @@ def get_tools() -> list[Tool]:
         Tool(
             name="pr_close",
             description="Closes a pull request without merging.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {"pullRequestId": {"type": "string"}},
                 "required": ["pullRequestId"],
@@ -308,7 +504,7 @@ def get_tools() -> list[Tool]:
         Tool(
             name="pr_reopen",
             description="Reopens a previously closed pull request.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {"pullRequestId": {"type": "string"}},
                 "required": ["pullRequestId"],
@@ -317,7 +513,7 @@ def get_tools() -> list[Tool]:
         Tool(
             name="comments_get",
             description="Gets all comments on a pull request including general and line-specific comments. CRITICAL for PR review workflow. Use when starting a review to see existing feedback or checking if issues were already raised. Simple: pass only pullRequestId for all comments. Filtered: pass pullRequestId + repositoryName + beforeCommitId + afterCommitId together.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
                     "pullRequestId": {"type": "string"},
@@ -333,7 +529,7 @@ def get_tools() -> list[Tool]:
         Tool(
             name="comment_post",
             description="Posts a comment on a pull request - either general PR comment or line-specific code comment. Use for PR feedback, questions about changes, or suggesting improvements. Provide filePath, filePosition, and relativeFileVersion for line-level comments (use mergeBase as beforeCommitId for accuracy).",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
                     "pullRequestId": {"type": "string"},
@@ -343,16 +539,25 @@ def get_tools() -> list[Tool]:
                     "content": {"type": "string"},
                     "filePath": {"type": "string"},
                     "filePosition": {"type": "number"},
-                    "relativeFileVersion": {"type": "string", "enum": ["BEFORE", "AFTER"]},
+                    "relativeFileVersion": {
+                        "type": "string",
+                        "enum": ["BEFORE", "AFTER"],
+                    },
                     "clientRequestToken": {"type": "string"},
                 },
-                "required": ["pullRequestId", "repositoryName", "beforeCommitId", "afterCommitId", "content"],
+                "required": [
+                    "pullRequestId",
+                    "repositoryName",
+                    "beforeCommitId",
+                    "afterCommitId",
+                    "content",
+                ],
             },
         ),
         Tool(
             name="comment_update",
             description="Updates existing comment content.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
                     "commentId": {"type": "string"},
@@ -364,7 +569,7 @@ def get_tools() -> list[Tool]:
         Tool(
             name="comment_delete",
             description="Deletes (clears content of) a comment.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {"commentId": {"type": "string"}},
                 "required": ["commentId"],
@@ -373,10 +578,13 @@ def get_tools() -> list[Tool]:
         Tool(
             name="comment_reply",
             description="Replies to an existing comment.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
-                    "inReplyTo": {"type": "string", "description": "Comment ID to reply to."},
+                    "inReplyTo": {
+                        "type": "string",
+                        "description": "Comment ID to reply to.",
+                    },
                     "content": {"type": "string"},
                     "clientRequestToken": {"type": "string"},
                 },
@@ -386,7 +594,7 @@ def get_tools() -> list[Tool]:
         Tool(
             name="approvals_get",
             description="Gets current approval states for a PR revision.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
                     "pullRequestId": {"type": "string"},
@@ -398,7 +606,7 @@ def get_tools() -> list[Tool]:
         Tool(
             name="approval_set",
             description="Approve or revoke approval for a pull request.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
                     "pullRequestId": {"type": "string"},
@@ -411,7 +619,7 @@ def get_tools() -> list[Tool]:
         Tool(
             name="approval_rules_check",
             description="Evaluates if PR meets all approval rules.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
                     "pullRequestId": {"type": "string"},
@@ -423,39 +631,62 @@ def get_tools() -> list[Tool]:
         Tool(
             name="merge_conflicts_check",
             description="Checks for merge conflicts between source and destination.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
                     "repositoryName": {"type": "string"},
                     "destinationCommitSpecifier": {"type": "string"},
                     "sourceCommitSpecifier": {"type": "string"},
-                    "mergeOption": {"type": "string", "enum": ["FAST_FORWARD_MERGE", "SQUASH_MERGE", "THREE_WAY_MERGE"]},
+                    "mergeOption": {
+                        "type": "string",
+                        "enum": [
+                            "FAST_FORWARD_MERGE",
+                            "SQUASH_MERGE",
+                            "THREE_WAY_MERGE",
+                        ],
+                    },
                 },
-                "required": ["repositoryName", "destinationCommitSpecifier", "sourceCommitSpecifier", "mergeOption"],
+                "required": [
+                    "repositoryName",
+                    "destinationCommitSpecifier",
+                    "sourceCommitSpecifier",
+                    "mergeOption",
+                ],
             },
         ),
         Tool(
             name="merge_options_get",
             description="Gets available merge strategies for a PR.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
                     "repositoryName": {"type": "string"},
                     "sourceCommitSpecifier": {"type": "string"},
                     "destinationCommitSpecifier": {"type": "string"},
                 },
-                "required": ["repositoryName", "sourceCommitSpecifier", "destinationCommitSpecifier"],
+                "required": [
+                    "repositoryName",
+                    "sourceCommitSpecifier",
+                    "destinationCommitSpecifier",
+                ],
             },
         ),
         Tool(
             name="pr_merge",
             description="Merges an approved pull request using the specified merge strategy.",
-            input_schema={
+            inputSchema={
                 "type": "object",
                 "properties": {
                     "pullRequestId": {"type": "string"},
                     "repositoryName": {"type": "string"},
-                    "mergeOption": {"type": "string", "enum": ["FAST_FORWARD_MERGE", "SQUASH_MERGE", "THREE_WAY_MERGE"]},
+                    "mergeOption": {
+                        "type": "string",
+                        "enum": [
+                            "FAST_FORWARD_MERGE",
+                            "SQUASH_MERGE",
+                            "THREE_WAY_MERGE",
+                        ],
+                    },
                     "commitMessage": {"type": "string"},
                     "authorName": {"type": "string"},
                     "email": {"type": "string"},
@@ -500,8 +731,8 @@ async def call_tool(name: str, arguments: dict) -> str:
         })
 
     # Repository and PR tools — run sync boto3 calls in thread pool
-    from src.services.repository import get_repository_service
     from src.services.pull_request import get_pull_request_service
+    from src.services.repository import get_repository_service
 
     svc = get_repository_service()
     pr_svc = get_pull_request_service()

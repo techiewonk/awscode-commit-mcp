@@ -6,7 +6,13 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from src.auth import AuthManager, AuthConfig, CredsStatus, get_auth_manager, set_auth_manager
+from src.auth import (
+    AuthConfig,
+    AuthManager,
+    CredsStatus,
+    get_auth_manager,
+    set_auth_manager,
+)
 
 
 def test_auth_config_from_env_empty():

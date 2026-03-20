@@ -41,8 +41,6 @@ class RepositoryService:
             params["sortBy"] = sort_by
         if order:
             params["order"] = order
-        n = _paginate(max_results)
-        params["maxResults"] = n
         try:
             resp = client.list_repositories(**params)
         except Exception as e:
@@ -71,7 +69,8 @@ class RepositoryService:
                     items.append(repo)
             else:
                 items.append(repo)
-        return {"items": items, "nextToken": resp.get("nextToken")}
+        n = _paginate(max_results)
+        return {"items": items[:n], "nextToken": resp.get("nextToken")}
 
     def get_repo(self, repository_name: str) -> dict[str, Any]:
         """Get repository metadata."""

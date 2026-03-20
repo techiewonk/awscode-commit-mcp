@@ -2,7 +2,7 @@
 
 import pytest
 
-from src.tools.registry import get_tools, call_tool
+from src.tools.registry import call_tool, get_tools
 
 
 def test_get_tools_includes_ping():

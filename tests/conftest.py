@@ -1,9 +1,10 @@
 """Pytest configuration and shared fixtures."""
 
-import pytest
 from unittest.mock import MagicMock
 
-from src.auth import AuthManager, AuthConfig, set_auth_manager
+import pytest
+
+from src.auth import AuthConfig, AuthManager, set_auth_manager
 
 
 @pytest.fixture
